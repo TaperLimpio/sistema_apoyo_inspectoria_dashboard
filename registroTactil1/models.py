@@ -2,7 +2,7 @@ from django.db import models
 
 
 # Create your models here.
-class registro_externo(models.Model):
+class registro(models.Model):
     motivos = [
         ("respuesta de emergencia.", "1"),
         ("respuesta a solucitud.", "2"),
@@ -12,7 +12,7 @@ class registro_externo(models.Model):
         ("representar organizacion.", "6"),
         ("consulta casual.", "7"),
     ]
-    fecha = models.DateField()
-    hora = models.TimeField()
+    fecha = models.DateField(auto_now_add=True)
+    hora = models.TimeField(auto_now_add=True)
     rut = models.CharField(max_length=10)
     motivo = models.CharField(max_length=100, choices=motivos)

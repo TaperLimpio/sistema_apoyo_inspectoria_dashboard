@@ -51,21 +51,20 @@
                 style="width: 100px"
             />
             <div class="row">
-                <div class="col mt-5">
-                    <input
-                        type="text"
-                        class="form-control rut_input text-center"
-                        placeholder="Ingrese su RUT"
-                        readonly
-                    />
+                <form class="col mt-5" method="post">
+                    {% csrf_token %}
+                    <!-- <input type="text" id ="rut_ingresado" class="form-control rut_input text-center" placeholder="Ingrese su RUT" readonly/> -->
+                     {{ form.as_p }}
 
                     <div class="pad_numerico mt-3">
-                        <button>7</button><button>8</button><button>9</button>
-                        <button>4</button><button>5</button><button>6</button>
-                        <button>1</button><button>2</button><button>3</button>
-                        <button>0</button><button>K</button>
-                        <button><i class="bi bi-backspace"></i></button
-                        ><button><i class="bi bi-check"></i></button>
+                        <button class="btn_num" value="7">7</button><button class="btn_num" value="8">8</button>
+                        <button class="btn_num" value="9">9</button> <button class="btn_num" value="4">4</button>
+                        <button class="btn_num" value="5">5</button><button class="btn_num" value="6">6</button>
+                        <button class="btn_num" value="1">1</button><button class="btn_num" value="2">2</button>
+                        <button class="btn_num" value="3">3</button><button class="btn_num" value="0">0</button>
+                        <button class="btn_num" value="K">K</button>
+                        <button id="borrar"><i class="bi bi-backspace"></i></button>
+                        <button type="submit"><i class="bi bi-check"></i></button>
                     </div>
                 </div>
                 <div class="col mt-5">
@@ -74,4 +73,47 @@
             </div>
         </div>
     </body>
+    <script>
+        const borrar = document.getElementById("borrar");
+        const botones = document.querySelectorAll(".btn_num");
+
+        function retrocederRut(){
+            var rut  = document.getElementById("id_rut");
+            if(rut.value.length == 10){
+                rut.value = rut.value.substring(0,rut.value.length - 2);
+            }else{
+                rut.value = rut.value.substring(0,rut.value.length - 1);
+            }
+            
+        }
+
+        function ingresarNum(num){
+                var rut = document.getElementById("id_rut");
+                if (rut.value.length <= 9) {
+                    if(num != "K"){
+                        if (rut.value.length == 8){
+                            rut.value = rut.value + "-" + num;
+                        }else{
+                            rut.value = rut.value + num;
+                        }
+                    }else{
+                        if (rut.value.length == 8){
+                            rut.value = rut.value + "-" + num;
+                        }
+                    }
+                }
+            }
+
+        borrar.addEventListener("click", function (event) {
+            event.preventDefault();
+            retrocederRut();
+        })
+
+        botones.forEach(boton => {
+            boton.addEventListener("click", function (event) {
+                event.preventDefault();
+                ingresarNum(boton.value);
+            })
+        });
+    </script>
 </html>
