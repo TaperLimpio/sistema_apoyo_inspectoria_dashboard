@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    path('accounts/', include('django.contrib.auth.urls')),
     path("registroTactil/", include("registroTactil1.urls")),
     path("dashboard/", include("dashboard.urls")),
     path("admin/", admin.site.urls),
