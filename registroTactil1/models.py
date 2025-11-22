@@ -4,13 +4,13 @@ from django.db import models
 # Create your models here.
 class registro(models.Model):
     motivos = [
-        ("respuesta de emergencia.", "1"),
-        ("respuesta a solucitud.", "2"),
-        ("visita administrativa.", "3"),
-        ("entrega programada.", "4"),
-        ("servicio tecnico.", "5"),
-        ("representar organizacion.", "6"),
-        ("consulta casual.", "7"),
+        ("respuesta de emergencia.", "respuesta de emergencia."),
+        ("respuesta a solucitud.", "respuesta a solucitud."),
+        ("visita administrativa.", "visita administrativa."),
+        ("entrega programada.", "entrega programada."),
+        ("servicio tecnico.", "servicio tecnico."),
+        ("representar organizacion.", "representar organizacion."),
+        ("consulta casual.", "consulta casual."),
     ]
     fecha = models.DateField(auto_now_add=True)
     hora = models.TimeField(auto_now_add=True)

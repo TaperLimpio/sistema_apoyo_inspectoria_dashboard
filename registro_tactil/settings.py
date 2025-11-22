@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "registroTactil1.apps.Registrotactil1Config",
+    "dashboard.apps.DashboardConfig"
 ]
 
 MIDDLEWARE = [
