@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import rut_form, razon_form
 from .models import registro
+from dashboard.models import persona, TipoPersona
 
 
 def index(request):
@@ -24,8 +25,13 @@ def razon(request,rut):
         form = razon_form()
         razon = request.POST.get("razon")
         registro_nuevo = registro()
-        registro_nuevo.rut = rut
+        responsable, nuevo = persona.objects.get_or_create(rut=rut)
+        if nuevo:
+            responsable.nombre = "NO-REGISTRADO"
+            responsable.tipo_persona = TipoPersona.objects.get(id=1)
+            responsable.save()
         registro_nuevo.motivo = razon
+        registro_nuevo.responsable = responsable
         registro_nuevo.save()
         return redirect("registro_completo")
     else:

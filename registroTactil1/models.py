@@ -1,5 +1,5 @@
 from django.db import models
-
+from dashboard.models import persona
 
 # Create your models here.
 class registro(models.Model):
@@ -14,5 +14,5 @@ class registro(models.Model):
     ]
     fecha = models.DateField(auto_now_add=True)
     hora = models.TimeField(auto_now_add=True)
-    rut = models.CharField(max_length=10)
     motivo = models.CharField(max_length=100, choices=motivos)
+    responsable = models.ForeignKey(persona, on_delete=models.PROTECT, default=1)
