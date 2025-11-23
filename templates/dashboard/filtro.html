@@ -1,0 +1,62 @@
+{% extends 'dashboard/base_generic.html' %}
+
+{% block sidebar %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <h3>Filtrar registros</h3>
+
+    <form method="get" class="row g-3 align-items-end">
+        <div class="col-md-4">
+            <label for="q_rut" class="form-label" style="color:#d7d9ff">RUT</label>
+            <input id="q_rut" name="rut" class="form-control" value="{{ request.GET.rut|default_if_none:'' }}" placeholder="Ingrese RUT" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="q_from" class="form-label" style="color:#d7d9ff">Desde</label>
+            <input id="q_from" name="desde" type="date" class="form-control" value="{{ request.GET.desde|default_if_none:'' }}" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="q_to" class="form-label" style="color:#d7d9ff">Hasta</label>
+            <input id="q_to" name="hasta" type="date" class="form-control" value="{{ request.GET.hasta|default_if_none:'' }}" />
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+
+    <hr />
+
+        {% if not registros  %}
+            <p class="empty">No se encontraron registros con esos filtros.</p>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-borderless text-white align-middle">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>RUT</th>
+                            <th>Motivo</th>
+                            <th>Responsable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in registros %}
+                        <tr>
+                            <td>{{ r.fecha }}</td>
+                            <td>{{ r.hora }}</td>
+                            <td>{{ r.responsable.rut }}</td>
+                            <td>{{ r.motivo }}</td>
+                            <td>{{ r.responsable.nombre }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+{% endblock %}
