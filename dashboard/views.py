@@ -1,8 +1,9 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from registroTactil1.models import registro
+from .forms import PersonaForm
 from datetime import datetime
 
 
@@ -57,4 +58,12 @@ def filtro(request):
 
 @login_required
 def persona_form(request):
-	return render(request, "dashboard/persona_form.html")
+    if request.method == "POST":
+        form = PersonaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard_index')
+        # si no es válido, caemos al render con errores
+    else:
+        form = PersonaForm()
+    return render(request, "dashboard/persona_form.html", {"form": form})
