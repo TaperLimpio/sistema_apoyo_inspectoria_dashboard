@@ -2,7 +2,7 @@
 {% block content %}
     {% if registros.exists %}
     <div class="table-responsive">
-        <h3 class="m-3">Registro recientes</h3>
+        <h3>Registro recientes</h3>
         <table class="table table-borderless text-white align-middle">
             <thead>
                 <tr>
@@ -25,6 +25,6 @@
         </table>
     </div>
     {% else %}
-    <p class="empty m-3">No hay registros todavía.</p>
+    <p class="empty">No hay registros todavía.</p>
     {% endif %}
 {% endblock %}

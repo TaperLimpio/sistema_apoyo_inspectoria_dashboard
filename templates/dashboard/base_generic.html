@@ -1,66 +1,124 @@
-<!doctype html>
+<!DOCTYPE html>
 {% load static %}
-<html lang="es">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Dashboard - Registros</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"/>
-        <style>
-            body { background-color: #142c7a; color: #bfc4ff; font-family: Arial, sans-serif; }
-            /* contenedor principal */
-            .box { background-color: #2e2f8e; padding:20px; border-radius:8px; margin-top:28px; display:flex; gap:20px; align-items:flex-start; }
-
-            /* sidebar */
-            .sidebar { width: 240px; flex: 0 0 240px; }
-            .sidebar .nav-item { margin-bottom: 8px; }
-
-            .main-content { flex: 1 1 auto; min-width: 0; }
-
-            /* estilos auxiliares */
-            table thead th { color: #e6e9ff; }
-            .empty { color: #e6e9ff; opacity: 0.9; }
-            a.btn-plain, button.btn-plain{ background:#7278d3; color:#fff; border-radius:8px; padding:8px 12px; text-decoration:none }
-
-            /* responsive: apilar sidebar encima del contenido en pantallas pequeñas */
-            @media (max-width: 768px) {
-                .box { flex-direction: column; }
-                .sidebar { width: 100%; flex: 0 0 auto; }
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <img src="{% static 'escudo.png' %}" alt="escudo" style="width:80px">
-                <h2>Dashboard — Registros</h2>
-                <div></div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"/>
+    <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+</head>
+<body>
+    <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Dashboard</a>
+        <ul class="navbar-nav flex-row d-md-none"> 
+            <li class="nav-item text-nowrap"> 
+                <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch" aria-controls="navbarSearch" aria-expanded="true" aria-label="Toggle search"> 
+                    <svg class="bi" aria-hidden="true">
+                        <use xlink:href="#search"></use>
+                    </svg> 
+                </button> 
+            </li> 
+            <li class="nav-item text-nowrap"> 
+                <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <svg class="bi" aria-hidden="true">
+                        <use xlink:href="#list"></use>
+                    </svg> 
+                </button> 
+            </li>
+        </ul>
+    </header>
+    <div class="container-fluid">
+        <divc class="row">
+            <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary"> 
+                <div class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel"> 
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="sidebarMenuLabel">Company name</h5> 
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button> 
+                    </div>
+                    <div class="sidebar_edit offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+                        <pc class="m-2" style="font-size: .875rem; color: black;">Bienvenido: {{ user.get_username }}</p> 
+                        {% block sidebar %}
+                        <ul class="nav flex-column"> 
+                            <li class="nav-item"> 
+                                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="{% url 'dashboard_index' %}"> 
+                                    <svg class="bi" aria-hidden="true"><use xlink:href="#house-fill"></use></svg>
+                                    Registros
+                                </a> 
+                            </li> 
+                            <li class="nav-item"> 
+                                <a class="nav-link d-flex align-items-center gap-2" href="{% url 'busqueda_filtro' %}"> 
+                                    <svg class="bi" aria-hidden="true"><use xlink:href="#file-earmark"></use></svg>
+                                    Buscar
+                                </a> 
+                            </li> 
+                            <li class="nav-item"> 
+                                <a class="nav-link d-flex align-items-center gap-2" href="{% url 'persona_ingreso' %}"> 
+                                    <svg class="bi" aria-hidden="true"><use xlink:href="#cart"></use></svg>
+                                    Ingresar Persona
+                                </a> 
+                            </li> 
+                        </ul>
+                        <!--
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase"> 
+                            <span>Saved reports</span> 
+                            <a class="link-secondary" href="#" aria-label="Add a new report"> 
+                                <svg class="bi" aria-hidden="true"><use xlink:href="#plus-circle"></use>
+                                </svg> 
+                            </a> 
+                        </h6> 
+                        <ul class="nav flex-column mb-auto"> 
+                            <li class="nav-item"> 
+                                <a class="nav-link d-flex align-items-center gap-2" href="#"> 
+                                    <svg class="bi" aria-hidden="true"><use xlink:href="#file-earmark-text"></use></svg>
+                                    Current month
+                                </a> 
+                            </li> 
+                            <li class="nav-item"> 
+                                <a class="nav-link d-flex align-items-center gap-2" href="#"> 
+                                    <svg class="bi" aria-hidden="true"><use xlink:href="#file-earmark-text"></use></svg>
+                                    Last quarter
+                                </a> 
+                            </li> 
+                            <li class="nav-item"> 
+                                <a class="nav-link d-flex align-items-center gap-2" href="#"> 
+                                    <svg class="bi" aria-hidden="true"><use xlink:href="#file-earmark-text"></use></svg>
+                                    Social engagement
+                                </a> 
+                            </li> 
+                            <li class="nav-item"> 
+                                <a class="nav-link d-flex align-items-center gap-2" href="#"> 
+                                    <svg class="bi" aria-hidden="true"><use xlink:href="#file-earmark-text"></use></svg>
+                                    Year-end sale
+                                </a> 
+                            </li> 
+                        </ul> 
+                        <hr class="my-3">
+                        --> 
+                        <ul class="nav flex-column mb-auto"> 
+                            <li class="nav-item">
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="nav-link d-flex align-items-center gap-2" type="submit">logout</button>
+                                </form>
+                                <!-- 
+                                <a class="nav-link d-flex align-items-center gap-2" href="{% url 'logout' %}"> 
+                                    <svg class="bi" aria-hidden="true"><use xlink:href="#door-closed"></use></svg>
+                                    Logout
+                                </a>
+                                --> 
+                            </li> 
+                        </ul>
+                        {% endblock %}
+                    </div>
+                </div>
             </div>
-
-            <div class="box">
-                <aside class="sidebar">
-                    {% block sidebar %}
-                    <!-- Sidebar por defecto: enlaces básicos. Reemplazar en plantillas hijas si se desea. -->
-                    <nav>
-                        <div class="nav-item"><p>¡Bienvenido!, {{ user.get_username}} </p></div>
-                        <div class="nav-item mb-3"><a class="btn-plain" href="{% url 'dashboard_index' %}">Registros</a></div>
-                        <div class="nav-item mb-3"><a class="btn-plain" href="{% url 'busqueda_filtro' %}">Buscar</a></div>
-                        <div class="nav-item mb-3"><a class="btn-plain" href="{% url 'persona_ingreso' %}">Agregar persona</a></div>
-                        <form action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                             <div class="nav-item mb-3"><button class="btn-plain" type="submit">logout</button></div>
-                        </form>
-                       
-                    </nav>
-                    {% endblock %}
-                </aside>
-
-                <main class="main-content">
-                    {% block content %}
-                    {% endblock %}
-                </main>
-            </div>
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                {% block content %}
+                {% endblock %}
+            </main>
         </div>
-    </body>
+    </div>
+</body>
 </html>
