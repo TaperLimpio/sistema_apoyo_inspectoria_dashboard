@@ -12,9 +12,13 @@ def index(request):
 
 def rut(request):
     if request.method == "POST":
-        rut = request.POST.get("rut")
-        print(rut)
-        return redirect("razon",rut)
+        rut_valid = rut_form(request.POST)
+        
+        if rut_valid.is_valid():
+            rut = request.POST.get("rut")
+            return redirect("razon",rut)
+        else:
+            form = rut_form()
     else:
         form = rut_form()
     return render(request, "registroTactil1/rut.html", {"form":form})
