@@ -71,7 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "registro_tactil.wsgi.application"
 
-LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_REDIRECT_URL = '/'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -126,4 +126,4 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGOUT_REDIRECT_URL = '/dashboard'
+LOGOUT_REDIRECT_URL = '/'

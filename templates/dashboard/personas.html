@@ -1,0 +1,95 @@
+{% extends "dashboard/base_generic.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <h3 class="m-3">Personas recientes</h3>
+            {% if personas_recientes %}
+                <div class="table-responsive mb-3">
+                    <table class="table table-borderless table-striped text-white align-middle">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>RUT</th>
+                                <th class="text-end">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in personas_recientes %}
+                                <tr>
+                                    <td>{{ p.nombre }}</td>
+                                    <td>{{ p.rut }}</td>
+                                    <td class="text-end">
+                                        <a href="#" class="btn btn-sm btn-outline-light me-1">Ver</a>
+                                        <a href="{% url 'persona_edit' p.id %}" class="btn btn-sm btn-primary">Editar</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="small text-muted">Aún no hay personas registradas.</p>
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <h3 class="m-3">Personas por tipo</h3>
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <h6>Internos</h6>
+                    {% if personas_internos.exists %}
+                        <div class="table-responsive mb-3">
+                            <table class="table table-borderless text-white align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>RUT</th>
+                                        <th class="text-end">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in personas_internos %}
+                                        <tr>
+                                            <td>{{ p.nombre }}</td>
+                                            <td>{{ p.rut }}</td>
+                                            <td class="text-end"><a href="{% url 'persona_edit' p.id %}" class="btn btn-sm btn-primary">Editar</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p>Sin internos</p>
+                    {% endif %}
+                </div>
+                <div class="col-12 col-sm-6">
+                    <h6>Externos</h6>
+                    {% if personas_externas.exists %}
+                        <div class="table-responsive mb-3">
+                            <table class="table table-borderless text-white align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>RUT</th>
+                                        <th class="text-end">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in personas_externas %}
+                                        <tr>
+                                            <td>{{ p.nombre }}</td>
+                                            <td>{{ p.rut }}</td>
+                                            <td class="text-end"><a href="{% url 'persona_edit' p.id %}" class="btn btn-sm btn-primary">Editar</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="small text-muted">Sin externos</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

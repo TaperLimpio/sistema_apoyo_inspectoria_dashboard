@@ -10,6 +10,11 @@ def index(request):
     return render(request, "registroTactil1/index.html")
 
 
+def home_choice(request):
+    """Interfaz simple en la raíz para elegir entre Registro Táctil y Dashboard."""
+    return render(request, "registroTactil1/home.html")
+
+
 def rut(request):
     if request.method == "POST":
         rut_valid = rut_form(request.POST)

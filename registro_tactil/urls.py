@@ -17,8 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from registroTactil1 import views as rt_views
 
 urlpatterns = [
+    path('', rt_views.home_choice, name='home'),
     path('accounts/', include('django.contrib.auth.urls')),
     path("registroTactil/", include("registroTactil1.urls")),
     path("dashboard/", include("dashboard.urls")),

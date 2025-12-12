@@ -52,11 +52,17 @@
                                     <svg class="bi" aria-hidden="true"><use xlink:href="#file-earmark"></use></svg>
                                     Buscar
                                 </a> 
-                            </li> 
+                            </li>
                             <li class="nav-item"> 
                                 <a class="nav-link d-flex align-items-center gap-2" href="{% url 'persona_ingreso' %}"> 
                                     <svg class="bi" aria-hidden="true"><use xlink:href="#cart"></use></svg>
                                     Ingresar Persona
+                                </a> 
+                            </li>  
+                            <li class="nav-item"> 
+                                <a class="nav-link d-flex align-items-center gap-2" href="{% url 'personas_view' %}"> 
+                                    <svg class="bi" aria-hidden="true"><use xlink:href="#cart"></use></svg>
+                                    Personas
                                 </a> 
                             </li> 
                         </ul>
@@ -108,7 +114,7 @@
                                     Logout
                                 </a>
                                 --> 
-                            </li> 
+                            </li>  
                         </ul>
                         {% endblock %}
                     </div>

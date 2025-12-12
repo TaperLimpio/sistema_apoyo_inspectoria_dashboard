@@ -4,7 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from registroTactil1.models import registro
 from .forms import PersonaForm
+from django.shortcuts import get_object_or_404
 from datetime import datetime
+from .models import persona
 
 
 @login_required
@@ -67,3 +69,37 @@ def persona_form(request):
     else:
         form = PersonaForm()
     return render(request, "dashboard/persona_form.html", {"form": form})
+
+
+@login_required
+def persona_edit(request, pk):
+    p = get_object_or_404(persona, pk=pk)
+    if request.method == 'POST':
+        form = PersonaForm(request.POST, instance=p)
+        if form.is_valid():
+            form.save()
+            return redirect('personas_view')
+    else:
+        form = PersonaForm(instance=p)
+    return render(request, 'dashboard/persona_edit.html', {'form': form, 'persona': p})
+
+@login_required
+def persona_view(request):
+    registros = registro.objects.select_related('responsable').all().order_by('-fecha', '-hora')
+    personas_recientes = []
+    seen = set()
+    limit = 6
+    for r in registros:
+        resp = r.responsable
+        if resp and resp.id not in seen:
+            personas_recientes.append(resp)
+            seen.add(resp.id)
+        if len(personas_recientes) >= limit:
+            break
+    personas_internos = persona.objects.filter(tipo_persona = 2)
+    personas_externas = persona.objects.filter(tipo_persona = 1)
+    return render(request, "dashboard/personas.html", {
+        "personas_recientes": personas_recientes,
+        "personas_internos": personas_internos,
+        "personas_externas": personas_externas,
+    })

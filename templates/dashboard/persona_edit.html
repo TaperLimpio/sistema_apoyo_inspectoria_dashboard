@@ -1,0 +1,40 @@
+{% extends 'dashboard/base_generic.html' %}
+
+{% block sidebar %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <h3>Editar persona: {{ persona.nombre }}</h3>
+
+    <div class="mt-3">
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            <div class="col-12">
+                <label for="id_nombre" class="form-label" style="color:#d7d9ff">Nombre completo</label>
+                {{ form.nombre }}
+            </div>
+
+            <div class="col-md-6">
+                <label for="id_rut" class="form-label" style="color:#d7d9ff">RUT</label>
+                {{ form.rut }}
+            </div>
+
+            <div class="col-md-6">
+                <label for="id_fono" class="form-label" style="color:#d7d9ff">Teléfono</label>
+                {{ form.fono }}
+            </div>
+
+            <div class="col-12">
+                <label for="id_tipo_persona" class="form-label" style="color:#d7d9ff">Tipo</label>
+                {{ form.tipo_persona }}
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                <a href="{% url 'personas_view' %}" class="btn btn-outline-light">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
