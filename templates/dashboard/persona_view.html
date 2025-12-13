@@ -1,0 +1,41 @@
+{% extends "dashboard/base_generic.html" %}
+{% block content %}
+    {% if data.exists %}
+    <div class="container">
+        <h3 class="m-3">Datos de {{data.nombre}}</h3>
+        <p>Rut: {{data.rut}}.</p>
+        <p>Fono: {{data.fono}}.</p>
+        <p>tipo: {{data.tipo_persona__tipo_persona}}</p>
+        <div>
+            {% if data.qrcode and data.qrcode != '0' %}
+            <div class="mt-2 d-flex align-items-center gap-3">
+                <div id="qrcode-view" style="width:140px;height:140px"></div>
+                <div>
+                    <p>QR:</p>
+                    <code style="word-break: break-all;">{{ data.qrcode }}</code>
+                    <div class="mt-2">
+                        <button class="btn btn-sm btn-outline-light" onclick="navigator.clipboard.writeText('{{ data.qrcode }}')">Copiar</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <p class="empty m-3">No hay registros todavía.</p>
+    {% endif %}
+    {% block scripts %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                const el = document.getElementById('qrcode-view');
+                if (el){
+                    const token = "{{ data.qrcode }}";
+                    if (token && token !== '0'){
+                        try{ new QRCode(el, { text: token, width: 140, height: 140 }); }catch(e){console.warn(e)}
+                    }
+                }
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

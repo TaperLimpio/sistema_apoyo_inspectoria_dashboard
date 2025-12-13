@@ -44,6 +44,7 @@
                                     <tr>
                                         <th>Nombre</th>
                                         <th>RUT</th>
+                                        <th>QR</th>
                                         <th class="text-end">Acciones</th>
                                     </tr>
                                 </thead>
@@ -52,6 +53,22 @@
                                         <tr>
                                             <td>{{ p.nombre }}</td>
                                             <td>{{ p.rut }}</td>
+                                            <td>
+                                                {% if p.qrcode and p.qrcode != '0' %}
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <div id="qrcode-{{ p.id }}" class="qrcode" data-token="{{ p.qrcode }}" style="width:64px;height:64px"></div>
+                                                        <div>
+                                                            <code style="word-break: break-all;">{{ p.qrcode }}</code>
+                                                            <div class="mt-1 d-flex gap-2">
+                                                                <button class="btn btn-sm btn-outline-light" onclick="navigator.clipboard.writeText('{{ p.qrcode }}')">Copiar</button>
+                                                                <a class="btn btn-sm btn-outline-light" href="{% url 'qr_image' p.qrcode %}?download=1">Descargar</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                    <span class="small text-muted">-</span>
+                                                {% endif %}
+                                            </td>
                                             <td class="text-end"><a href="{% url 'persona_edit' p.id %}" class="btn btn-sm btn-primary">Editar</a></td>
                                         </tr>
                                     {% endfor %}
@@ -92,4 +109,20 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            document.querySelectorAll('.qrcode').forEach(function(el){
+                const token = el.getAttribute('data-token');
+                if (token && token !== '0'){
+                    try{
+                        new QRCode(el, { text: token, width: 64, height: 64 });
+                    }catch(e){console.warn('QR render failed', e)}
+                }
+            });
+        });
+    </script>
 {% endblock %}

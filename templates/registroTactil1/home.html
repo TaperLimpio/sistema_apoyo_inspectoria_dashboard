@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"/>
         <style>
             body { background-color: #142c7a; color: #bfc4ff; }
+            .texto { color: #bfc4ff; }
             .choice-card { background-color: #2e2f8e; border: none; }
             .choice-btn { background-color: #7278d3; color: #fff; }
             .choice-btn:active, .choice-btn:focus { background-color: #5b61b0; color: #fff; }
@@ -30,7 +31,7 @@
                 <div class="col-12 text-center mb-4">
                     <img src="{% static 'escudo.png' %}" alt="escudo" style="width:96px;" class="mb-2" />
                     <h1 class="h4">Bienvenido</h1>
-                    <p class="text-muted small">Seleccione una de las opciones para continuar</p>
+                    <p>Seleccione una de las opciones para continuar</p>
                 </div>
 
                 <div class="col-12 col-md-8">
@@ -38,10 +39,10 @@
                         <div class="col-12 col-md-6">
                             <a href="{% url 'rut' %}" class="text-decoration-none">
                                 <div class="card choice-card text-center py-4">
-                                    <div class="card-body">
+                                    <div class="card-body texto">
                                         <i class="bi bi-hand-index-thumb fs-1"></i>
                                         <h3 class="h6 mt-2">Registro táctil</h3>
-                                        <p class="small text-muted">Registrar ingreso usando el teclado táctil</p>
+                                        <p>Registrar ingreso usando el teclado táctil</p>
                                         <button class="btn choice-btn btn-lg mt-2 w-100">Ir</button>
                                     </div>
                                 </div>
@@ -50,10 +51,22 @@
                         <div class="col-12 col-md-6">
                             <a href="{% url 'dashboard_index' %}" class="text-decoration-none">
                                 <div class="card choice-card text-center py-4">
-                                    <div class="card-body">
+                                    <div class="card-body texto">
                                         <i class="bi bi-speedometer2 fs-1"></i>
                                         <h3 class="h6 mt-2">Dashboard</h3>
-                                        <p class="small text-muted">Ver registros y estadísticas</p>
+                                        <p>Ver registros y estadísticas</p>
+                                        <button class="btn choice-btn btn-lg mt-2 w-100">Ir</button>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <a href="{% url 'escanear_qr' %}" class="text-decoration-none">
+                                <div class="card choice-card text-center py-4">
+                                    <div class="card-body texto">
+                                        <i class="bi bi-qr-code-scan fs-1"></i>
+                                        <h3 class="h6 mt-2">Escanear QR</h3>
+                                        <p>Escanear QR para registros rapidos.</p>
                                         <button class="btn choice-btn btn-lg mt-2 w-100">Ir</button>
                                     </div>
                                 </div>

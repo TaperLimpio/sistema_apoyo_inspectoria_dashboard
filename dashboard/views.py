@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from registroTactil1.models import registro
 from .forms import PersonaForm
+from registroTactil1.utils import generate_qr_id
 from django.shortcuts import get_object_or_404
 from datetime import datetime
 from .models import persona
@@ -58,16 +59,34 @@ def filtro(request):
     registros = registros.order_by('-fecha', '-hora')
     return render(request, "dashboard/filtro.html", {"registros": registros})
 
+def persona_view(request,pk):
+    data = get_object_or_404(persona,pk = pk)
+    return render(request, "dashboard/persona_view.html", {"data": data})
+
 @login_required
 def persona_form(request):
     if request.method == "POST":
         form = PersonaForm(request.POST)
         if form.is_valid():
-            form.save()
+            persona_obj = form.save()
+            # If this persona is internal (tipo_persona.id == 2) and no qrcode assigned, assign a deterministic qrcode
+            try:
+                tipo_id = persona_obj.tipo_persona.id if persona_obj.tipo_persona else None
+            except Exception:
+                tipo_id = None
+            if tipo_id == 2:
+                current_qr = getattr(persona_obj, 'qrcode', None)
+                if not current_qr or current_qr == "0":
+                    token = generate_qr_id(persona_obj.id, persona_obj.rut or "", deterministic=True)
+                    persona_obj.qrcode = token
+                    persona_obj.save()
             return redirect('dashboard_index')
-        # si no es válido, caemos al render con errores
     else:
-        form = PersonaForm()
+        rut_prefill = request.GET.get('rut')
+        if rut_prefill:
+            form = PersonaForm(initial={'rut': rut_prefill})
+        else:
+            form = PersonaForm()
     return render(request, "dashboard/persona_form.html", {"form": form})
 
 
@@ -77,7 +96,18 @@ def persona_edit(request, pk):
     if request.method == 'POST':
         form = PersonaForm(request.POST, instance=p)
         if form.is_valid():
-            form.save()
+            persona_obj = form.save()
+            # If persona is internal and missing qrcode, add deterministic qrcode
+            try:
+                tipo_id = persona_obj.tipo_persona.id if persona_obj.tipo_persona else None
+            except Exception:
+                tipo_id = None
+            if tipo_id == 2:
+                current_qr = getattr(persona_obj, 'qrcode', None)
+                if not current_qr or current_qr == "0":
+                    token = generate_qr_id(persona_obj.id, persona_obj.rut or "", deterministic=True)
+                    persona_obj.qrcode = token
+                    persona_obj.save()
             return redirect('personas_view')
     else:
         form = PersonaForm(instance=p)

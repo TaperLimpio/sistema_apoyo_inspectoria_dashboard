@@ -10,6 +10,7 @@
                     <th>Hora</th>
                     <th>RUT</th>
                     <th>Motivo</th>
+                    <th>QR</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,6 +20,19 @@
                     <td>{{ r.hora }}</td>
                     <td>{{ r.responsable.rut }}</td>
                     <td>{{ r.motivo }}</td>
+                    <td>
+                        {% if r.qr_id %}
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="{% url 'qr_image' r.qr_id %}" alt="qr" width="64" height="64" />
+                                <div class="d-flex flex-column">
+                                    <a class="btn btn-sm btn-outline-light" href="{% url 'qr_image' r.qr_id %}?download=1">Descargar</a>
+                                    <small class="text-muted" style="word-break: break-all; max-width:160px">{{ r.qr_id }}</small>
+                                </div>
+                            </div>
+                        {% else %}
+                            <span class="small text-muted">-</span>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

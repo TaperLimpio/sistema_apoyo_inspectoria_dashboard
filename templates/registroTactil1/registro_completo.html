@@ -50,6 +50,15 @@
             <div class="check">
                 <i class="bi bi-check-lg"></i>
             </div>
+            {% if qr %}
+            <div class="mt-4">
+                <p><strong>ID QR:</strong></p>
+                <code id="qr_text" style="word-break: break-all;">{{ qr }}</code>
+                <div class="mt-2">
+                    <button class="btn btn-outline-light btn-sm" onclick="navigator.clipboard.writeText('{{ qr }}')">Copiar ID</button>
+                </div>
+            </div>
+            {% endif %}
         </div>
         <!-- Script de respaldo: redirige a la vista 'rut' después de 10 segundos -->
         <script>
@@ -58,5 +67,27 @@
                 window.location.href = "{% url 'rut' %}";
             }, 10000); // 10000 ms = 10 segundos
         </script>
+        {% if qr %}
+        <!-- QRCODE renderer (qrcodejs) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const qrVal = "{{ qr }}";
+                try {
+                    const container = document.createElement('div');
+                    container.className = 'mt-3';
+                    container.id = 'qrcode';
+                    document.querySelector('.container').appendChild(container);
+                    new QRCode(container, {
+                        text: qrVal,
+                        width: 140,
+                        height: 140,
+                    });
+                } catch (e) {
+                    console.warn('QR render failed', e);
+                }
+            });
+        </script>
+        {% endif %}
     </body>
 </html>
